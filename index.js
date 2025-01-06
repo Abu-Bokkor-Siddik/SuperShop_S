@@ -22,7 +22,18 @@ const client = new MongoClient(uri, {
 const dbConnect = async()=> {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
+    const haiku = database.collection("item");
+    // get 
+    app.get('/add',async(req,res)=>{
+      const alladd = haiku.find()
+      const result = await alladd.toArray()
+      res.send(result)
+    })
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -37,6 +48,8 @@ dbConnect()
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

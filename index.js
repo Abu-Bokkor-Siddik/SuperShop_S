@@ -49,6 +49,26 @@ app.delete('/my/:id',async(req,res)=>{
   const result = await haiku.deleteOne(query)
   res.send(result)
 })
+// update data form submited data 
+// app.put('/submits/:id',async(req,res)=>{
+//   const id = req.params.id
+//   const filter = {_id :new ObjectId(id)}
+//   const options ={ upset:true}
+// const updateDs= req.body 
+// const updateds ={
+//   $set:{
+    
+//     mark:updateDs.mark,
+//     note:updateDs.note,
+//     stutas:updateDs.stutas,
+//     textarea:updateDs.textarea 
+   
+//   }
+
+// }
+// const result = await submitedData.updateOne(filter,updateds,options)
+// res.send(result)
+// })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

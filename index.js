@@ -30,6 +30,17 @@ const dbConnect = async () => {
       const result = await alladd.toArray();
       res.send(result);
     });
+     // post ass
+     app.post('/ass',async(req,res)=>{
+      try{
+     const body = req.body
+     const result = await haiku.insertOne(body)
+     res.send(result)
+     console.log(body)
+      }catch(err){
+          console.log(err)
+      }
+  })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

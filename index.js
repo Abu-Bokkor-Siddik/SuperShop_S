@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const jwt = require('jsonwebtoken');
 const cors = require("cors");
 const port = 3000;
 require("dotenv").config();
@@ -23,8 +23,19 @@ const dbConnect = async () => {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
-    const haiku = database.collection("item");
+    // const haiku = database.collection("item");
+
+
+
+    // jwt 
+    app.post("/authentication",async(req,res) => {
+   const userEmail = req.body;
+   const token =jwt.sign(userEmail,process.env.ACCESS_KEY_TOKEN,{expiresIn:"10d"})
+   res.send({token})
+    })
     // get
+
+
     app.get("/add", async (req, res) => {
       const alladd = haiku.find();
       const result = await alladd.toArray();

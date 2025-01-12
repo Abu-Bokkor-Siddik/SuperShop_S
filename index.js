@@ -6,6 +6,15 @@ const port = 3000;
 require("dotenv").config();
 app.use(cors());
 app.use(express.json());
+// app.use(cors({
+//   origin: [
+//     'http://localhost:5173'   
+// ],
+//   credentials: true 
+// }));
+
+
+app.use(cors({origin:true, credentials: true }));
 const { MongoClient, ServerApiVersion } = require("mongodb");
 // mongo
 const uri = `mongodb+srv://${process.env.DB_user}:${process.env.DB_pass}@cluster0.kkqbu90.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;

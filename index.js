@@ -4,14 +4,14 @@ const jwt = require('jsonwebtoken');
 const cors = require("cors");
 const port = 3000;
 require("dotenv").config();
-app.use(cors());
+// app.use(cors({}));
 app.use(express.json());
-// app.use(cors({
-//   origin: [
-//     'http://localhost:5173'   
-// ],
-//   credentials: true 
-// }));
+app.use(cors({
+  origin: [
+    'http://localhost:5173'   
+],
+  credentials: true 
+}));
 
 
 app.use(cors({origin:true, credentials: true }));
@@ -39,6 +39,7 @@ const dbConnect = async () => {
     // jwt 
     app.post("/authentication",async(req,res) => {
    const userEmail = req.body;
+   console.log(userEmail)
    const token =jwt.sign(userEmail,process.env.ACCESS_KEY_TOKEN,{expiresIn:"10d"})
    res.send({token})
     })

@@ -33,7 +33,9 @@ const dbConnect = async () => {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // const haiku = database.collection("item");
-
+    const database = client.db("SiddikShope");
+    const userInfoCollection = database.collection("users");
+    const productInfoCollection = database.collection("products");
 
 
     // jwt 

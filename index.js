@@ -45,7 +45,7 @@ const dbConnect = async () => {
         if (existingUser) {
           return res.send({massage:"User already exist"})
         }
-        const result = await haiku.insertOne(body);
+        const result = await userInfoCollection.insertOne(body);
         res.send(result);
         // console.log(body);
       } catch (err) {

@@ -52,7 +52,16 @@ const dbConnect = async () => {
         console.log(err);
       }
     });
-
+// get singel user 
+ app.get("/user/:email", async (req, res) => {
+  const query ={email:req.params.email}
+      const result = await userInfoCollection.findOne(query);
+      // if (!result) {
+      //   return res.send({massage:'No user found'})
+      // }
+      console.log(result,'here ')
+      res.send(result);
+    });
     // jwt
     app.post("/authentication", async (req, res) => {
       const userEmail = req.body;

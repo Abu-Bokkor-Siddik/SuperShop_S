@@ -62,6 +62,7 @@ const dbConnect = async () => {
     // add products
     app.post("/addProduct", async (req, res) => {
       const productInfo = req.body;
+      const result = await productInfoCollection.insertOne(productInfo)
     });
     // jwt
     app.post("/authentication", async (req, res) => {

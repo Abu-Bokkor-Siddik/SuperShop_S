@@ -39,11 +39,11 @@ const dbConnect = async () => {
     app.post("/users", async (req, res) => {
       try {
         const body = req.body;
-        // have any user 
-        const query = {email:body?.email}
-        const existingUser = await userInfoCollection.findOne(query)
+        // have any user
+        const query = { email: body?.email };
+        const existingUser = await userInfoCollection.findOne(query);
         if (existingUser) {
-          return res.send({massage:"User already exist"})
+          return res.send({ massage: "User already exist" });
         }
         const result = await userInfoCollection.insertOne(body);
         res.send(result);
@@ -52,15 +52,16 @@ const dbConnect = async () => {
         console.log(err);
       }
     });
-// get singel user 
- app.get("/user/:email", async (req, res) => {
-  const query ={email:req.params.email}
+    // get singel user
+    app.get("/user/:email", async (req, res) => {
+      const query = { email: req.params.email };
       const result = await userInfoCollection.findOne(query);
-      // if (!result) {
-      //   return res.send({massage:'No user found'})
-      // }
-      console.log(result,'here ')
+      // console.log(result,'here ')
       res.send(result);
+    });
+    // add products
+    app.post("/addProduct", async (req, res) => {
+      const productInfo = req.body;
     });
     // jwt
     app.post("/authentication", async (req, res) => {

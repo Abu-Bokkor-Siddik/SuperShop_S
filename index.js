@@ -12,6 +12,24 @@ app.use(
     credentials: true,
   })
 );
+// verify jwt middleware 
+const jwtVerify = (req,res,next)=>{
+  const authorization = req.header.authorization;
+  console.log(authorization,'authorization here')
+  if (!authorization) {
+    return res.send({message:"No token"})
+  }
+  const token = authorization.split(" ")[1]
+
+  console.log(token,'token here')
+  jwt.verify(token,process.env.ACCESS_KEY_TOKEN,(err,decoded)=>{
+    if (err) {
+      return res.send({message:'invalid token'})
+    }
+    req.decoded= decoded;
+    next()
+  })
+}
 
 app.use(cors({ origin: true, credentials: true }));
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -63,6 +81,7 @@ const dbConnect = async () => {
     app.post("/addProduct", async (req, res) => {
       const productInfo = req.body;
       const result = await productInfoCollection.insertOne(productInfo)
+      res.send(result)
     });
     // jwt
     app.post("/authentication", async (req, res) => {

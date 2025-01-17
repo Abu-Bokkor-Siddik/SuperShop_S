@@ -13,7 +13,7 @@ app.use(
 );
 // verify jwt middleware
 const jwtVerify = (req, res, next) => {
-  const authorization = req.header.authorization;
+  const authorization = req.headers.authorization;
   console.log(authorization, "authorization here");
   if (!authorization) {
     return res.send({ message: "No token" });
@@ -77,7 +77,7 @@ const dbConnect = async () => {
       res.send(result);
     });
     // add products
-    app.post("/addProduct", async (req, res) => {
+    app.post("/addProduct",jwtVerify,async (req, res) => {
       const productInfo = req.body;
       const result = await productInfoCollection.insertOne(productInfo);
       res.send(result);

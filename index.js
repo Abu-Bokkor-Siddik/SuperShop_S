@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const port = 3000;
 require("dotenv").config();
-// app.use(cors({}));
 app.use(express.json());
 app.use(
   cors({
@@ -12,24 +11,24 @@ app.use(
     credentials: true,
   })
 );
-// verify jwt middleware 
-const jwtVerify = (req,res,next)=>{
+// verify jwt middleware
+const jwtVerify = (req, res, next) => {
   const authorization = req.header.authorization;
-  console.log(authorization,'authorization here')
+  console.log(authorization, "authorization here");
   if (!authorization) {
-    return res.send({message:"No token"})
+    return res.send({ message: "No token" });
   }
-  const token = authorization.split(" ")[1]
+  const token = authorization.split(" ")[1];
 
-  console.log(token,'token here')
-  jwt.verify(token,process.env.ACCESS_KEY_TOKEN,(err,decoded)=>{
+  console.log(token, "token here");
+  jwt.verify(token, process.env.ACCESS_KEY_TOKEN, (err, decoded) => {
     if (err) {
-      return res.send({message:'invalid token'})
+      return res.send({ message: "invalid token" });
     }
-    req.decoded= decoded;
-    next()
-  })
-}
+    req.decoded = decoded;
+    next();
+  });
+};
 
 app.use(cors({ origin: true, credentials: true }));
 const { MongoClient, ServerApiVersion } = require("mongodb");
@@ -80,8 +79,8 @@ const dbConnect = async () => {
     // add products
     app.post("/addProduct", async (req, res) => {
       const productInfo = req.body;
-      const result = await productInfoCollection.insertOne(productInfo)
-      res.send(result)
+      const result = await productInfoCollection.insertOne(productInfo);
+      res.send(result);
     });
     // jwt
     app.post("/authentication", async (req, res) => {

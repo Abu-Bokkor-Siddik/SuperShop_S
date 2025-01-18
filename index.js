@@ -94,6 +94,11 @@ const dbConnect = async () => {
       const result = await alladd.toArray();
       res.send(result);
     });
+    // get all data 
+    app.get('/all',async (req,res)=>{
+      const result = await productInfoCollection.find().toArray()
+      res.send(result)
+    })
 
     // delete
     app.delete("/my/:id", async (req, res) => {

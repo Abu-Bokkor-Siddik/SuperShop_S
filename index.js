@@ -94,27 +94,30 @@ const dbConnect = async () => {
       const result = await alladd.toArray();
       res.send(result);
     });
-    // get all data 
-    app.get('/all',async (req,res)=>{
+    // get all data
+    app.get("/all", async (req, res) => {
       // searching by name
       // sort by price
-      // filter by category 
+      // filter by category
       //filter by brand
-      const {title,sort,category,brand}=req.query;
-      const query ={}
+      const { title, sort, category, brand } = req.query;
+      const query = {};
       if (title) {
-        query.title={$regex:title,$option:'i'}
+        query.title = { $regex: title, $option: "i" };
       }
       if (category) {
-        query.category={$regex:category,$option:'i'}
+        query.category = { $regex: category, $option: "i" };
       }
       if (brand) {
-        query.brand=brand
+        query.brand = brand;
       }
-      const sortOption = sort === 'asc' ? 1 : -1;
-      const result = await productInfoCollection.find().toArray()
-      res.send(result)
-    })
+      const sortOption = sort === "asc" ? 1 : -1;
+      const result = await productInfoCollection
+        .find(query)
+        .sort({ $price: sortOption })
+        .toArray();
+      res.send(result);
+    });
 
     // delete
     app.delete("/my/:id", async (req, res) => {

@@ -101,6 +101,17 @@ const dbConnect = async () => {
       // filter by category 
       //filter by brand
       const {title,sort,category,brand}=req.query;
+      const query ={}
+      if (title) {
+        query.title={$regex:title,$option:'i'}
+      }
+      if (category) {
+        query.category={$regex:category,$option:'i'}
+      }
+      if (brand) {
+        query.brand=brand
+      }
+      const sortOption = sort === 'asc' ? 1 : -1;
       const result = await productInfoCollection.find().toArray()
       res.send(result)
     })

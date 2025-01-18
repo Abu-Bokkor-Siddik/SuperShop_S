@@ -96,6 +96,11 @@ const dbConnect = async () => {
     });
     // get all data 
     app.get('/all',async (req,res)=>{
+      // searching by name
+      // sort by price
+      // filter by category 
+      //filter by brand
+      const {title,sort,category,brand}=req.query;
       const result = await productInfoCollection.find().toArray()
       res.send(result)
     })

@@ -89,35 +89,40 @@ const dbConnect = async () => {
     });
     // get
 
-    app.get("/add", async (req, res) => {
-      const alladd = haiku.find();
-      const result = await alladd.toArray();
-      res.send(result);
-    });
+    // app.get("/add", async (req, res) => {
+    //   const alladd = haiku.find();
+    //   const result = await alladd.toArray();
+    //   res.send(result);
+    // });
     // get all data
     app.get("/all", async (req, res) => {
-      // searching by name
-      // sort by price
-      // filter by category
-      //filter by brand
       const { title, sort, category, brand } = req.query;
       const query = {};
+    
       if (title) {
-        query.title = { $regex: title, $option: "i" };
+        query.title = { $regex: title, $options: "i" }; // Fixed typo: $option -> $options
       }
       if (category) {
-        query.category = { $regex: category, $option: "i" };
+        query.category = { $regex: category, $options: "i" }; // Fixed typo: $option -> $options
       }
       if (brand) {
         query.brand = brand;
       }
+    
       const sortOption = sort === "asc" ? 1 : -1;
-      const result = await productInfoCollection
-        .find(query)
-        .sort({ $price: sortOption })
-        .toArray();
-      res.send(result);
+    
+      try {
+        const result = await productInfoCollection
+          .find(query)
+          .sort({ price: sortOption }) // Corrected $price to price
+          .toArray();
+    
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ error: error.message });
+      }
     });
+    
 
     // delete
     app.delete("/my/:id", async (req, res) => {

@@ -116,6 +116,7 @@ const dbConnect = async () => {
           .find(query)
           .sort({ price: sortOption }) // Corrected $price to price
           .toArray();
+          const productBrand= await productInfoCollection.find({},{projection:{category:1,brand:1}}).toArray()
     
         res.send(result);
       } catch (error) {

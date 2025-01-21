@@ -116,9 +116,12 @@ const dbConnect = async () => {
           .find(query)
           .sort({ price: sortOption }) // Corrected $price to price
           .toArray();
+          const totalProducts= await productInfoCollection.countDocuments(query);
           const productBrand= await productInfoCollection.find({},{projection:{category:1,brand:1}}).toArray()
+          const brands = [...new Set(productBrand.map((p)=>p.brand))];
+          const categorys = [...new Set(productBrand.map((p)=>p.category))];
     
-        res.send(result);
+        res.send({result,brands,categorys,totalProducts});
       } catch (error) {
         res.status(500).send({ error: error.message });
       }

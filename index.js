@@ -28,7 +28,7 @@ const jwtVerify = (req, res, next) => {
 };
 
 app.use(cors({ origin: true, credentials: true }));
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 // mongo
 const uri = `mongodb+srv://${process.env.DB_user}:${process.env.DB_pass}@cluster0.kkqbu90.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -72,6 +72,12 @@ const dbConnect = async () => {
       // console.log(result,'here ')
       res.send(result);
     });
+
+    app.patch("wishlist",verify,async(req,res)=>{
+      const {userEmail,productId}=req.body;
+      const result = await userInfoCollection.updateOne({email:userEmail},{$addToSet:{wishlist:new ObjectId(String(productId))}})
+      res.send(result)
+    })
     // add products
     app.post("/addProduct", jwtVerify, async (req, res) => {
       const productInfo = req.body;

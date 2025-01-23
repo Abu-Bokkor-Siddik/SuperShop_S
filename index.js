@@ -87,13 +87,7 @@ const dbConnect = async () => {
       });
       res.send({ token });
     });
-    // get
-
-    // app.get("/add", async (req, res) => {
-    //   const alladd = haiku.find();
-    //   const result = await alladd.toArray();
-    //   res.send(result);
-    // });
+    
     // get all data
     app.get("/all", async (req, res) => {
       const { title, sort, category, brand ,page=1,limit=6 } = req.query;

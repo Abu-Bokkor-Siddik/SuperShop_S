@@ -73,7 +73,7 @@ const dbConnect = async () => {
       res.send(result);
     });
 
-    app.patch("wishlist",verify,async(req,res)=>{
+    app.patch("/wishlist",async(req,res)=>{
       const {userEmail,productId}=req.body;
       const result = await userInfoCollection.updateOne({email:userEmail},{$addToSet:{wishlist:new ObjectId(String(productId))}})
       res.send(result)

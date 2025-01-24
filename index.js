@@ -139,6 +139,11 @@ const dbConnect = async () => {
       const user = await userInfoCollection.findOne({
         _id: new ObjectId(String(userId)),
       });
+      if (!user) {
+        return res.send({massage:"user not found"})
+      }
+      const result = await productInfoCollection.find({_id:{$in:user.wishlist||[]}}).toArray()
+      res.send(result)
     });
 
     // delete

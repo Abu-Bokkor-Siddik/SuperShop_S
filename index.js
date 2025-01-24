@@ -73,11 +73,14 @@ const dbConnect = async () => {
       res.send(result);
     });
 
-    app.patch("/wishlist",async(req,res)=>{
-      const {userEmail,productId}=req.body;
-      const result = await userInfoCollection.updateOne({email:userEmail},{$addToSet:{wishlist:new ObjectId(String(productId))}})
-      res.send(result)
-    })
+    app.patch("/wishlist", async (req, res) => {
+      const { userEmail, productId } = req.body;
+      const result = await userInfoCollection.updateOne(
+        { email: userEmail },
+        { $addToSet: { wishlist: new ObjectId(String(productId)) } }
+      );
+      res.send(result);
+    });
     // add products
     app.post("/addProduct", jwtVerify, async (req, res) => {
       const productInfo = req.body;
@@ -93,12 +96,12 @@ const dbConnect = async () => {
       });
       res.send({ token });
     });
-    
+
     // get all data
     app.get("/all", async (req, res) => {
-      const { title, sort, category, brand ,page=1,limit=6 } = req.query;
+      const { title, sort, category, brand, page = 1, limit = 6 } = req.query;
       const query = {};
-    
+
       if (title) {
         query.title = { $regex: title, $options: "i" }; // Fixed typo: $option -> $options
       }
@@ -108,29 +111,35 @@ const dbConnect = async () => {
       if (brand) {
         query.brand = brand;
       }
-    
+
       const sortOption = sort === "asc" ? 1 : -1;
-      const pageNumber = Number(page)
-      const limitNumber = Number(limit)
-    
+      const pageNumber = Number(page);
+      const limitNumber = Number(limit);
+
       try {
         const result = await productInfoCollection
           .find(query)
-          .skip((pageNumber-1)*limitNumber)
+          .skip((pageNumber - 1) * limitNumber)
           .limit(limitNumber)
           .sort({ price: sortOption }) // Corrected $price to price
           .toArray();
-          const totalProducts= await productInfoCollection.countDocuments(query);
-          // const productBrand= await productInfoCollection.find({},{projection:{category:1,brand:1}}).toArray()
-          const brands = [...new Set(result.map((p)=>p.brand))];
-          const categorys = [...new Set(result.map((p)=>p.category))];
-    
-        res.send({result,brands,categorys,totalProducts});
+        const totalProducts = await productInfoCollection.countDocuments(query);
+        // const productBrand= await productInfoCollection.find({},{projection:{category:1,brand:1}}).toArray()
+        const brands = [...new Set(result.map((p) => p.brand))];
+        const categorys = [...new Set(result.map((p) => p.category))];
+
+        res.send({ result, brands, categorys, totalProducts });
       } catch (error) {
         res.status(500).send({ error: error.message });
       }
     });
-    
+    // get data form wish list
+    app.get("/wishlist:userId", async (req, res) => {
+      const { userId } = req.params.userId;
+      const user = await userInfoCollection.findOne({
+        _id: new ObjectId(String(userId)),
+      });
+    });
 
     // delete
     // app.delete("/my/:id", async (req, res) => {

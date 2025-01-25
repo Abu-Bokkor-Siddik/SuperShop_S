@@ -148,6 +148,11 @@ const dbConnect = async () => {
     // remove product form wish list 
     app.patch("/remove", async (req, res) => {
       const { userEmail, productId } = req.body;
+       const result = await userInfoCollection.updateOne(
+        { email: userEmail },
+        { $pull: { wishlist: new ObjectId(String(productId)) } }
+      );
+      res.send(result);
      
     });
 

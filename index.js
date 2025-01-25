@@ -145,6 +145,11 @@ const dbConnect = async () => {
       const result = await productInfoCollection.find({_id:{$in:user.wishlist||[]}}).toArray()
       res.send(result)
     });
+    // remove product form wish list 
+    app.patch("/remove", async (req, res) => {
+      const { userEmail, productId } = req.body;
+     
+    });
 
     // delete
     // app.delete("/my/:id", async (req, res) => {
